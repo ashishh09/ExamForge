@@ -1,0 +1,6 @@
+{
+  "name": "ExamForge AI",
+  "description": "AI-powered exam preparation, question paper builder, study notes, definitions, and university-style model papers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
