@@ -453,54 +453,54 @@ Upon collision detection:
         timeAllowed: '3 Hours',
         maximumMarks: 50,
         instructions: [
-          'Answer ALL questions from Section A (2 marks each).',
-          'Answer any FOUR questions from Section B (5 marks each).',
-          'Answer any TWO questions from Section C (10 marks each).',
+          'Answer ALL questions from Section 0 (2 marks each).',
+          'Answer any FOUR questions from Section 1 (5 marks each).',
+          'Answer any TWO questions from Section 2 (10 marks each).',
           'Assume suitable data wherever necessary and state assumptions clearly.',
           'Draw neat diagrams and schematics wherever applicable.'
         ],
         sections: [
           {
-            name: 'SECTION A',
+            name: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
             instruction: 'Answer ALL questions. Each question carries 2 marks.',
             totalMarks: 10,
             questions: [
-              { questionNumber: 'Q1', text: 'Define Bandwidth-Delay Product (BDP) and state its physical significance in network pipe capacity.', marks: 2 },
-              { questionNumber: 'Q2', text: 'Distinguish between pure ALOHA and slotted ALOHA with respect to their maximum theoretical channel throughput.', marks: 2 },
-              { questionNumber: 'Q3', text: 'What is the purpose of the TTL (Time to Live) field in an IPv4 datagram header?', marks: 2 },
-              { questionNumber: 'Q4', text: 'Explain why UDP is preferred over TCP for real-time multiplayer gaming and voice communications.', marks: 2 },
-              { questionNumber: 'Q5', text: 'Define Subnet Mask and explain how CIDR notation /26 is converted to dotted decimal format.', marks: 2 }
+              { questionNumber: 'Q0', text: 'Define Bandwidth-Delay Product (BDP) and state its physical significance in network pipe capacity.', marks: 2 },
+              { questionNumber: 'Q1', text: 'Distinguish between pure ALOHA and slotted ALOHA with respect to their maximum theoretical channel throughput.', marks: 2 },
+              { questionNumber: 'Q2', text: 'What is the purpose of the TTL (Time to Live) field in an IPv4 datagram header?', marks: 2 },
+              { questionNumber: 'Q3', text: 'Explain why UDP is preferred over TCP for real-time multiplayer gaming and voice communications.', marks: 2 },
+              { questionNumber: 'Q4', text: 'Define Subnet Mask and explain how CIDR notation /26 is converted to dotted decimal format.', marks: 2 }
             ]
           },
           {
-            name: 'SECTION B',
+            name: setup.sections[1]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 1' : 'SECTION B'),
             instruction: 'Answer any FOUR questions. Each question carries 5 marks.',
             totalMarks: 20,
             questions: [
-              { questionNumber: 'Q6', text: 'Explain the working principle of CSMA/CD and the binary exponential backoff algorithm utilized in Ethernet networks.', marks: 5 },
-              { questionNumber: 'Q7', text: 'Given an IP network 192.168.1.0/24, calculate the subnet mask and host ranges to create 4 equal-sized subnets.', marks: 5 },
-              { questionNumber: 'Q8', text: 'Compare the Go-Back-N and Selective Repeat sliding window flow control protocols with appropriate frame diagrams.', marks: 5 },
-              { questionNumber: 'Q9', text: 'Differentiate between Distance Vector Routing and Link State Routing algorithms based on routing overhead and convergence speed.', marks: 5 },
-              { questionNumber: 'Q10', text: 'Describe the complete DNS resolution process distinguishing between recursive and iterative query mechanisms.', marks: 5 }
+              { questionNumber: 'Q5', text: 'Explain the working principle of CSMA/CD and the binary exponential backoff algorithm utilized in Ethernet networks.', marks: 5 },
+              { questionNumber: 'Q6', text: 'Given an IP network 192.168.1.0/24, calculate the subnet mask and host ranges to create 4 equal-sized subnets.', marks: 5 },
+              { questionNumber: 'Q7', text: 'Compare the Go-Back-N and Selective Repeat sliding window flow control protocols with appropriate frame diagrams.', marks: 5 },
+              { questionNumber: 'Q8', text: 'Differentiate between Distance Vector Routing and Link State Routing algorithms based on routing overhead and convergence speed.', marks: 5 },
+              { questionNumber: 'Q9', text: 'Describe the complete DNS resolution process distinguishing between recursive and iterative query mechanisms.', marks: 5 }
             ]
           },
           {
-            name: 'SECTION C',
+            name: setup.sections[2]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 2' : 'SECTION C'),
             instruction: 'Answer any TWO questions. Each question carries 10 marks.',
             totalMarks: 20,
             questions: [
-              { questionNumber: 'Q11', text: 'Draw and explain the 7-layer OSI Reference Model in detail, clearly enumerating the core functions and associated protocols at each layer.', marks: 10 },
-              { questionNumber: 'Q12', text: 'Explain TCP Congestion Control mechanisms in detail, highlighting the operational distinctions between Slow Start, Congestion Avoidance, Fast Retransmit, and Fast Recovery.', marks: 10 },
-              { questionNumber: 'Q13', text: 'Illustrate the TCP 3-way handshake connection establishment and 4-way connection termination mechanisms, along with state transition descriptions.', marks: 10 }
+              { questionNumber: 'Q10', text: 'Draw and explain the 7-layer OSI Reference Model in detail, clearly enumerating the core functions and associated protocols at each layer.', marks: 10 },
+              { questionNumber: 'Q11', text: 'Explain TCP Congestion Control mechanisms in detail, highlighting the operational distinctions between Slow Start, Congestion Avoidance, Fast Retransmit, and Fast Recovery.', marks: 10 },
+              { questionNumber: 'Q12', text: 'Illustrate the TCP 3-way handshake connection establishment and 4-way connection termination mechanisms, along with state transition descriptions.', marks: 10 }
             ]
           }
         ]
       },
       answerKey: [
         {
-          id: 'ak-1',
-          questionNumber: 'Q1',
-          sectionName: 'SECTION A',
+          id: 'ak-0',
+          questionNumber: 'Q0',
+          sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           questionText: 'Define Bandwidth-Delay Product (BDP) and state its physical significance.',
           marks: 2,
           markingScheme: [
@@ -514,9 +514,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-2',
-          questionNumber: 'Q2',
-          sectionName: 'SECTION A',
+          id: 'ak-1',
+          questionNumber: 'Q1',
+          sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           questionText: 'Distinguish between pure ALOHA and slotted ALOHA with respect to maximum throughput.',
           marks: 2,
           markingScheme: [
@@ -530,9 +530,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-3',
-          questionNumber: 'Q3',
-          sectionName: 'SECTION A',
+          id: 'ak-2',
+          questionNumber: 'Q2',
+          sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           questionText: 'What is the purpose of the TTL (Time to Live) field in an IPv4 datagram header?',
           marks: 2,
           markingScheme: [
@@ -546,9 +546,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-4',
-          questionNumber: 'Q4',
-          sectionName: 'SECTION A',
+          id: 'ak-3',
+          questionNumber: 'Q3',
+          sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           questionText: 'Explain why UDP is preferred over TCP for real-time multiplayer gaming and voice communications.',
           marks: 2,
           markingScheme: [
@@ -562,9 +562,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-5',
-          questionNumber: 'Q5',
-          sectionName: 'SECTION A',
+          id: 'ak-4',
+          questionNumber: 'Q4',
+          sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           questionText: 'Define Subnet Mask and explain how CIDR notation /26 is converted to dotted decimal format.',
           marks: 2,
           markingScheme: [
@@ -578,9 +578,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-6',
-          questionNumber: 'Q6',
-          sectionName: 'SECTION B',
+          id: 'ak-5',
+          questionNumber: 'Q5',
+          sectionName: setup.sections[1]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 1' : 'SECTION B'),
           questionText: 'Explain the working principle of CSMA/CD and the binary exponential backoff algorithm.',
           marks: 5,
           markingScheme: [
@@ -595,9 +595,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-7',
-          questionNumber: 'Q7',
-          sectionName: 'SECTION B',
+          id: 'ak-6',
+          questionNumber: 'Q6',
+          sectionName: setup.sections[1]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 1' : 'SECTION B'),
           questionText: 'Given network 192.168.1.0/24, calculate subnet mask and host ranges for 4 subnets.',
           marks: 5,
           markingScheme: [
@@ -611,9 +611,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-8',
-          questionNumber: 'Q11',
-          sectionName: 'SECTION C',
+          id: 'ak-10',
+          questionNumber: 'Q10',
+          sectionName: setup.sections[2]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 2' : 'SECTION C'),
           questionText: 'Draw and explain the 7-layer OSI Reference Model in detail with functions and protocols.',
           marks: 10,
           markingScheme: [
@@ -628,9 +628,9 @@ Upon collision detection:
           ]
         },
         {
-          id: 'ak-9',
-          questionNumber: 'Q12',
-          sectionName: 'SECTION C',
+          id: 'ak-11',
+          questionNumber: 'Q11',
+          sectionName: setup.sections[2]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 2' : 'SECTION C'),
           questionText: 'Explain TCP Congestion Control mechanisms in detail: Slow Start, Avoidance, Fast Retransmit/Recovery.',
           marks: 10,
           markingScheme: [
@@ -804,53 +804,53 @@ Upon collision detection:
       timeAllowed: '3 Hours',
       maximumMarks: 50,
       instructions: [
-        'Answer ALL questions from Section A (2 marks each).',
-        'Answer any FOUR questions from Section B (5 marks each).',
-        'Answer any TWO questions from Section C (10 marks each).',
+        'Answer ALL questions from Section 0 (2 marks each).',
+        'Answer any FOUR questions from Section 1 (5 marks each).',
+        'Answer any TWO questions from Section 2 (10 marks each).',
         'Neat diagrams must be drawn wherever necessary.'
       ],
       sections: [
         {
-          name: 'SECTION A',
+          name: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
           instruction: 'Answer ALL questions. Each question carries 2 marks.',
           totalMarks: 10,
           questions: [
-            { questionNumber: 'Q1', text: 'Define Thrashing and describe its direct impact on overall CPU utilization.', marks: 2 },
-            { questionNumber: 'Q2', text: 'What is a Context Switch? Why is context switching considered pure administrative overhead?', marks: 2 },
-            { questionNumber: 'Q3', text: 'State Belady\'s Anomaly. Which page replacement algorithm exhibits this anomaly?', marks: 2 },
-            { questionNumber: 'Q4', text: 'Differentiate between a binary semaphore and a counting semaphore.', marks: 2 },
-            { questionNumber: 'Q5', text: 'Define internal fragmentation and contrast it with external fragmentation.', marks: 2 }
+            { questionNumber: 'Q0', text: 'Define Thrashing and describe its direct impact on overall CPU utilization.', marks: 2 },
+            { questionNumber: 'Q1', text: 'What is a Context Switch? Why is context switching considered pure administrative overhead?', marks: 2 },
+            { questionNumber: 'Q2', text: 'State Belady\'s Anomaly. Which page replacement algorithm exhibits this anomaly?', marks: 2 },
+            { questionNumber: 'Q3', text: 'Differentiate between a binary semaphore and a counting semaphore.', marks: 2 },
+            { questionNumber: 'Q4', text: 'Define internal fragmentation and contrast it with external fragmentation.', marks: 2 }
           ]
         },
         {
-          name: 'SECTION B',
+          name: setup.sections[1]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 1' : 'SECTION B'),
           instruction: 'Answer any FOUR questions. Each question carries 5 marks.',
           totalMarks: 20,
           questions: [
-            { questionNumber: 'Q6', text: 'Explain the four necessary Coffman conditions required for a deadlock to occur in a multi-programming system.', marks: 5 },
-            { questionNumber: 'Q7', text: 'Compare Preemptive and Non-Preemptive CPU scheduling algorithms with examples.', marks: 5 },
-            { questionNumber: 'Q8', text: 'Explain the working of Demand Paging and outline the exact steps executed during a Page Fault trap.', marks: 5 },
-            { questionNumber: 'Q9', text: 'Describe Peterson\'s algorithm for mutual exclusion in a two-process critical section problem.', marks: 5 },
-            { questionNumber: 'Q10', text: 'Explain the Banker\'s Algorithm for deadlock avoidance with safety algorithm steps.', marks: 5 }
+            { questionNumber: 'Q5', text: 'Explain the four necessary Coffman conditions required for a deadlock to occur in a multi-programming system.', marks: 5 },
+            { questionNumber: 'Q6', text: 'Compare Preemptive and Non-Preemptive CPU scheduling algorithms with examples.', marks: 5 },
+            { questionNumber: 'Q7', text: 'Explain the working of Demand Paging and outline the exact steps executed during a Page Fault trap.', marks: 5 },
+            { questionNumber: 'Q8', text: 'Describe Peterson\'s algorithm for mutual exclusion in a two-process critical section problem.', marks: 5 },
+            { questionNumber: 'Q9', text: 'Explain the Banker\'s Algorithm for deadlock avoidance with safety algorithm steps.', marks: 5 }
           ]
         },
         {
-          name: 'SECTION C',
+          name: setup.sections[2]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 2' : 'SECTION C'),
           instruction: 'Answer any TWO questions. Each question carries 10 marks.',
           totalMarks: 20,
           questions: [
-            { questionNumber: 'Q11', text: 'Illustrate the hardware address translation scheme in Paging with Translation Lookaside Buffer (TLB). Calculate Effective Access Time for a 90% hit ratio.', marks: 10 },
-            { questionNumber: 'Q12', text: 'Discuss the classic Readers-Writers synchronization problem. Provide a complete semaphore-based solution ensuring mutual exclusion.', marks: 10 },
-            { questionNumber: 'Q13', text: 'Explain the various Page Replacement algorithms (FIFO, Optimal, LRU) with a reference string of your choice.', marks: 10 }
+            { questionNumber: 'Q10', text: 'Illustrate the hardware address translation scheme in Paging with Translation Lookaside Buffer (TLB). Calculate Effective Access Time for a 90% hit ratio.', marks: 10 },
+            { questionNumber: 'Q11', text: 'Discuss the classic Readers-Writers synchronization problem. Provide a complete semaphore-based solution ensuring mutual exclusion.', marks: 10 },
+            { questionNumber: 'Q12', text: 'Explain the various Page Replacement algorithms (FIFO, Optimal, LRU) with a reference string of your choice.', marks: 10 }
           ]
         }
       ]
     },
     answerKey: [
       {
-        id: 'ak-os-1',
-        questionNumber: 'Q1',
-        sectionName: 'SECTION A',
+        id: 'ak-os-0',
+        questionNumber: 'Q0',
+        sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
         questionText: 'Define Thrashing and describe its direct impact on overall CPU utilization.',
         marks: 2,
         markingScheme: [
@@ -864,9 +864,9 @@ Upon collision detection:
         ]
       },
       {
-        id: 'ak-os-2',
-        questionNumber: 'Q2',
-        sectionName: 'SECTION A',
+        id: 'ak-os-1',
+        questionNumber: 'Q1',
+        sectionName: setup.sections[0]?.name || (setup.startOptionNumberFromZero !== false ? 'SECTION 0' : 'SECTION A'),
         questionText: 'What is a Context Switch? Why is context switching considered pure administrative overhead?',
         marks: 2,
         markingScheme: [

@@ -30,7 +30,7 @@ export const UniversityQuestionPaperView: React.FC<UniversityQuestionPaperViewPr
     if (paper.instructions && paper.instructions.length > 0) {
       text += `General Instructions:\n`;
       paper.instructions.forEach((ins, idx) => {
-        text += `${idx + 1}. ${ins}\n`;
+        text += `${idx}. ${ins}\n`;
       });
       text += `\n----------------------------------------------------\n\n`;
     }
@@ -127,11 +127,11 @@ export const UniversityQuestionPaperView: React.FC<UniversityQuestionPaperViewPr
             <span className="text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 print:text-black block">
               General Instructions:
             </span>
-            <ul className="text-xs space-y-1 text-slate-700 dark:text-slate-300 print:text-black font-medium pl-4 list-decimal">
+            <ol start={0} className="text-xs space-y-1 text-slate-700 dark:text-slate-300 print:text-black font-medium pl-4 list-decimal">
               {paper.instructions.map((inst, i) => (
-                <li key={i}>{inst}</li>
+                <li key={i} value={i}>{inst}</li>
               ))}
-            </ul>
+            </ol>
           </div>
         )}
 

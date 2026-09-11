@@ -245,8 +245,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-5 tracking-tight">
               Upload Study Material
             </h2>
-            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
-              PDF, DOCX, PPTX or TXT
+            <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 mt-1">
+              Supported: PDF • DOCX • PPTX • TXT
             </p>
 
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">

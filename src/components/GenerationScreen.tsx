@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Check, Loader2, Circle, AlertCircle } from 'lucide-react';
+import { Sparkles, Check, Loader2, Circle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { StepId } from '../types';
 
 interface GenerationScreenProps {
@@ -125,6 +125,19 @@ export const GenerationScreen: React.FC<GenerationScreenProps> = ({
         <div className="text-center text-xs text-slate-400 dark:text-slate-500">
           Synthesizing accurate academic content. This typically takes 5–15 seconds.
         </div>
+
+        {onCancel && (
+          <div className="pt-2 flex justify-center">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Cancel & Go Back to Setup
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

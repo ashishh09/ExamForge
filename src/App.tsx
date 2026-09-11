@@ -5,8 +5,12 @@ import { PreparationSetupSteps } from './components/PreparationSetupSteps';
 import { GenerationScreen } from './components/GenerationScreen';
 import { ResultsDashboard } from './components/ResultsDashboard';
 import { ToastNotification, ToastMessage } from './components/ToastNotification';
+import { OfflineBanner } from './components/OfflineBanner';
+import { GetTheAppSection } from './components/GetTheAppSection';
+import { PWAInstallButton } from './components/PWAInstallButton';
 import { UploadedFile, PreparationSetup, ExamPreparationPack, StepId } from './types';
 import { SAMPLE_STUDY_MATERIALS, generatePackLocally } from './sampleData';
+import { registerSW } from 'virtual:pwa-register';
 
 const DEFAULT_SETUP: PreparationSetup = {
   selectedMarks: [2, 5, 10],
@@ -14,10 +18,11 @@ const DEFAULT_SETUP: PreparationSetup = {
   difficulty: 'moderate',
   subjectName: '',
   examTitle: 'Model Semester Examination',
+  startOptionNumberFromZero: true,
   sections: [
-    { id: 'sec-1', name: 'Section A', questionCount: 5, marksPerQuestion: 2 },
-    { id: 'sec-2', name: 'Section B', questionCount: 4, marksPerQuestion: 5 },
-    { id: 'sec-3', name: 'Section C', questionCount: 2, marksPerQuestion: 10 },
+    { id: 'sec-0', name: 'Section 0', questionCount: 5, marksPerQuestion: 2 },
+    { id: 'sec-1', name: 'Section 1', questionCount: 4, marksPerQuestion: 5 },
+    { id: 'sec-2', name: 'Section 2', questionCount: 2, marksPerQuestion: 10 },
   ],
   selectedContent: [
     'important_questions',
@@ -50,16 +55,27 @@ export function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  // Apply dark mode class to <html>
+  // Apply dark mode class to <html>, <body>, and style color-scheme
   useEffect(() => {
+    const root = document.documentElement;
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
+      document.body.classList.add('dark');
       localStorage.setItem('examforge_theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
+      document.body.classList.remove('dark');
       localStorage.setItem('examforge_theme', 'light');
     }
   }, [isDarkMode]);
+
+  const handleToggleDarkMode = useCallback(() => {
+    setIsDarkMode((prev) => !prev);
+  }, []);
 
   // Toast Helper
   const addToast = useCallback((type: 'success' | 'error' | 'info', title: string, description?: string) => {
@@ -97,6 +113,25 @@ export function App() {
     },
     [addToast]
   );
+
+  // Register PWA Service Worker for app-shell caching
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      try {
+        registerSW({
+          immediate: true,
+          onNeedRefresh() {
+            addToast('info', 'Update Available', 'A new version of ExamForge AI is available.');
+          },
+          onOfflineReady() {
+            addToast('success', 'Offline Ready', 'ExamForge AI app shell cached for offline access.');
+          },
+        });
+      } catch (e) {
+        console.warn('PWA service worker registration notice:', e);
+      }
+    }
+  }, [addToast]);
 
   // File handling
   const handleFileUpload = (file: UploadedFile) => {
@@ -140,6 +175,12 @@ export function App() {
     setUploadedFile(null);
     setErrorMessage(null);
     setSetup(DEFAULT_SETUP);
+  };
+
+  const handleBackToSetup = () => {
+    setPack(null);
+    setIsGenerating(false);
+    setErrorMessage(null);
   };
 
   // Generation Handler
@@ -292,10 +333,31 @@ export function App() {
       {/* Top Navigation */}
       <Navbar
         isDarkMode={isDarkMode}
-        toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+        toggleDarkMode={handleToggleDarkMode}
         onReset={handleReset}
         hasPack={!!pack}
+        onBack={
+          pack
+            ? handleBackToSetup
+            : isGenerating
+            ? handleBackToSetup
+            : uploadedFile
+            ? handleRemoveFile
+            : undefined
+        }
+        backLabel={
+          pack
+            ? 'Back to Setup'
+            : isGenerating
+            ? 'Cancel'
+            : uploadedFile
+            ? 'Back to Upload'
+            : undefined
+        }
       />
+
+      {/* Offline connectivity banner */}
+      <OfflineBanner />
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pb-24 sm:pb-16">
@@ -305,6 +367,7 @@ export function App() {
             currentStepId={currentStepId}
             statusMessage={statusMessage}
             completedSteps={completedSteps}
+            onCancel={handleBackToSetup}
           />
         ) : pack ? (
           /* VIEW 2: RESULTS DASHBOARD */
@@ -314,21 +377,29 @@ export function App() {
             onDownloadSuccess={(msg) => addToast('success', 'PDF downloaded successfully', msg)}
             onDownloadError={(err) => addToast('error', 'Download Failed', err)}
             onStartNewPrep={handleReset}
+            onBackToSetup={handleBackToSetup}
           />
         ) : (
           /* VIEW 3: HOME / UPLOAD & SETUP */
           <div className="space-y-10">
             {/* Intro Hero banner */}
-            <div className="text-center space-y-3 max-w-2xl mx-auto">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">
+            <div className="text-center space-y-4 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">
                 Autonomous University Preparation Engine
-              </span>
+              </div>
+
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                Forge Exam-Ready Study Material in Seconds
+                ExamForge AI
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                Transform any syllabus, notes, or lecture slides into high-yield important questions, structured answers, and university model question papers with marking schemes.
+
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+                Turn your study material into exam-ready preparation.
               </p>
+
+              {/* Prominent Home Screen Install App Button */}
+              <div className="pt-2 flex justify-center">
+                <PWAInstallButton variant="primary" showInstalledState={true} />
+              </div>
             </div>
 
             {/* Upload Section */}
@@ -349,9 +420,13 @@ export function App() {
                   onUpdateSetup={setSetup}
                   onStartGeneration={handleStartGeneration}
                   isGenerating={isGenerating}
+                  onBackToUpload={handleRemoveFile}
                 />
               </div>
             )}
+
+            {/* Get the App Section */}
+            <GetTheAppSection />
           </div>
         )}
       </main>

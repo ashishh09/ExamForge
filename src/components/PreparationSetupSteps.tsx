@@ -28,6 +28,7 @@ interface PreparationSetupStepsProps {
   onUpdateSetup: (newSetup: PreparationSetup) => void;
   onStartGeneration: () => void;
   isGenerating: boolean;
+  onBackToUpload?: () => void;
 }
 
 const AVAILABLE_MARKS = [2, 4, 5, 6, 8, 10];
@@ -133,7 +134,8 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
   setup,
   onUpdateSetup,
   onStartGeneration,
-  isGenerating
+  isGenerating,
+  onBackToUpload,
 }) => {
   const [activeStep, setActiveStep] = useState<1 | 2 | 3 | 4>(1);
   const [customMarkInput, setCustomMarkInput] = useState<string>('');
@@ -176,10 +178,11 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
   };
 
   const addSection = () => {
-    const nextChar = String.fromCharCode(65 + setup.sections.length);
+    const nextIdx = setup.sections.length;
+    const name = setup.startOptionNumberFromZero !== false ? `Section ${nextIdx}` : `Section ${String.fromCharCode(65 + nextIdx)}`;
     const newSection: ExamSectionConfig = {
       id: `sec-${Date.now()}`,
-      name: `Section ${nextChar}`,
+      name,
       questionCount: 3,
       marksPerQuestion: 5
     };
@@ -384,6 +387,51 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
               </div>
             </div>
 
+            {/* Zero-Indexed Numbering Control */}
+            <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-4">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                    Question & Option Numbering Starts from 0
+                  </span>
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                    {setup.startOptionNumberFromZero !== false ? 'Enabled (Q0, Sec 0)' : 'Disabled (Q1, Sec A)'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  When enabled, questions begin at <strong className="text-blue-600 dark:text-blue-400">Q0</strong>, sections begin at <strong className="text-blue-600 dark:text-blue-400">Section 0</strong>, and alternative choices start at Option 0.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const current = setup.startOptionNumberFromZero !== false;
+                  const nextVal = !current;
+                  // Update section names accordingly if default
+                  const updatedSections = setup.sections.map((sec, idx) => {
+                    if (nextVal && sec.name.startsWith('Section ')) {
+                      return { ...sec, name: `Section ${idx}` };
+                    } else if (!nextVal && sec.name.startsWith('Section ')) {
+                      return { ...sec, name: `Section ${String.fromCharCode(65 + idx)}` };
+                    }
+                    return sec;
+                  });
+                  onUpdateSetup({ ...setup, startOptionNumberFromZero: nextVal, sections: updatedSections });
+                }}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  setup.startOptionNumberFromZero !== false ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-700'
+                }`}
+                role="switch"
+                aria-checked={setup.startOptionNumberFromZero !== false}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                    setup.startOptionNumberFromZero !== false ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
             {/* Sections List */}
             <div className="space-y-3">
               {setup.sections.map((sec, idx) => (
@@ -393,7 +441,7 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
                 >
                   <div className="flex items-center gap-3">
                     <span className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">
-                      {String.fromCharCode(65 + idx)}
+                      {setup.startOptionNumberFromZero !== false ? idx : String.fromCharCode(65 + idx)}
                     </span>
                     <input
                       type="text"
@@ -472,7 +520,18 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex items-center justify-between pt-4">
+            {onBackToUpload ? (
+              <button
+                type="button"
+                onClick={onBackToUpload}
+                className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold text-sm transition-all cursor-pointer flex items-center gap-2"
+                title="Change or remove uploaded material"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Upload
+              </button>
+            ) : <div />}
             <button
               type="button"
               onClick={() => setActiveStep(2)}
@@ -770,7 +829,7 @@ export const PreparationSetupSteps: React.FC<PreparationSetupStepsProps> = ({
                 className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-white text-slate-950 hover:bg-slate-100 font-extrabold text-base shadow-lg shadow-black/20 hover:scale-[1.02] active:scale-[0.99] transition-all cursor-pointer inline-flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-5 h-5 text-blue-600" />
-                Generate Exam Preparation Pack
+                Create Exam Preparation
               </button>
             </div>
           </div>

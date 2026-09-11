@@ -97,15 +97,22 @@ Difficulty Level: "${setup.difficulty || 'moderate'}"
 Selected Marks Hierarchy: ${JSON.stringify(setup.selectedMarks || [2, 5, 10])}
 Selected Content Types: ${JSON.stringify(setup.selectedContent || [])}
 Sections requested for Model Question Paper: ${JSON.stringify(setup.sections || [
-            { name: 'SECTION A', questionCount: 5, marksPerQuestion: 2 },
-            { name: 'SECTION B', questionCount: 4, marksPerQuestion: 5 },
-            { name: 'SECTION C', questionCount: 2, marksPerQuestion: 10 },
+            { name: 'SECTION 0', questionCount: 5, marksPerQuestion: 2 },
+            { name: 'SECTION 1', questionCount: 4, marksPerQuestion: 5 },
+            { name: 'SECTION 2', questionCount: 2, marksPerQuestion: 10 },
           ])}
+Start Option and Question Numbering from Zero: ${setup.startOptionNumberFromZero !== false ? 'YES (Start from Q0, Option 0, Section 0)' : 'NO (Start from Q1, Section A)'}
 
 Study Material Excerpt:
 """
 ${(textContent || '').slice(0, 15000)}
 """
+
+CRITICAL NUMBERING RULES:
+${setup.startOptionNumberFromZero !== false ? `1. QUESTION NUMBERING MUST START FROM 0: The very first question in Section 0 MUST be numbered "Q0". Consecutive questions must be numbered "Q1", "Q2", "Q3", "Q4", "Q5", and so forth across sections.
+2. OPTION / CHOICE NUMBERING MUST START FROM 0: If any question provides alternative choices/options, label choices starting from 0 (e.g., "[OR — Option 0]", "Option 0", "Option 1").
+3. SECTION NAMES: Section names should start from 0 ("SECTION 0", "SECTION 1", "SECTION 2") unless custom section names were explicitly provided.
+4. ANSWER KEY: All answer key questionNumber fields must exactly match the 0-indexed question numbers ("Q0", "Q1", "Q2", etc.).` : `1. Question numbering starts from Q1.`}
 
 CRITICAL REQUIREMENTS:
 Generate a valid JSON object strictly matching this schema:
@@ -117,7 +124,7 @@ Generate a valid JSON object strictly matching this schema:
   },
   "importantQuestions": [
     {
-      "id": "iq-1",
+      "id": "iq-0",
       "question": "Clear exam question",
       "marks": 10,
       "priority": "HIGH PRIORITY",
@@ -129,7 +136,7 @@ Generate a valid JSON object strictly matching this schema:
   ],
   "shortNotes": [
     {
-      "id": "sn-1",
+      "id": "sn-0",
       "title": "Topic Title",
       "summary": "High yield summary",
       "bulletPoints": ["Key point 1", "Key point 2", "Key point 3"],
@@ -138,14 +145,14 @@ Generate a valid JSON object strictly matching this schema:
   ],
   "longAnswers": [
     {
-      "id": "la-1",
+      "id": "la-0",
       "question": "In-depth analytical or descriptive question",
       "marks": 10,
       "category": "Topic",
       "introduction": "Introductory conceptual background",
       "bodySections": [
         {
-          "heading": "1. Core Mechanics",
+          "heading": "0. Core Mechanics",
           "points": ["Point 1", "Point 2"]
         }
       ],
@@ -155,7 +162,7 @@ Generate a valid JSON object strictly matching this schema:
   ],
   "definitions": [
     {
-      "id": "def-1",
+      "id": "def-0",
       "term": "Key Concept",
       "definition": "Precise academic definition",
       "keyKeywords": ["Keyword 1", "Keyword 2"],
@@ -165,14 +172,14 @@ Generate a valid JSON object strictly matching this schema:
   ],
   "keyPoints": [
     {
-      "id": "kp-1",
+      "id": "kp-0",
       "topic": "Topic Heading",
-      "points": ["Bullet 1", "Bullet 2", "Bullet 3"]
+      "points": ["Bullet 0", "Bullet 1", "Bullet 2"]
     }
   ],
   "sampleQuestions": [
     {
-      "id": "sq-1",
+      "id": "sq-0",
       "question": "Analytical question with solution",
       "marks": 4,
       "type": "Application",
@@ -187,26 +194,26 @@ Generate a valid JSON object strictly matching this schema:
     "timeAllowed": "3 Hours",
     "maximumMarks": 50,
     "instructions": [
-      "Answer ALL questions from Section A.",
-      "Answer the required number from Section B & C.",
+      "Answer ALL questions from Section 0.",
+      "Answer the required number from Section 1 & 2.",
       "Assume suitable data where necessary."
     ],
     "sections": [
       {
-        "name": "SECTION A",
+        "name": "SECTION 0",
         "instruction": "Answer all questions (2 marks each).",
         "totalMarks": 10,
         "questions": [
-          { "questionNumber": "Q1", "text": "Question text", "marks": 2 }
+          { "questionNumber": "Q0", "text": "Question text", "marks": 2, "hasChoice": false }
         ]
       }
     ]
   },
   "answerKey": [
     {
-      "id": "ak-1",
-      "questionNumber": "Q1",
-      "sectionName": "SECTION A",
+      "id": "ak-0",
+      "questionNumber": "Q0",
+      "sectionName": "SECTION 0",
       "questionText": "Question text",
       "marks": 2,
       "markingScheme": [

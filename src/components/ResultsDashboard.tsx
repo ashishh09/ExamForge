@@ -15,7 +15,9 @@ import {
   ChevronRight,
   Layers,
   Award,
-  Hash
+  Hash,
+  ArrowLeft,
+  RotateCcw,
 } from 'lucide-react';
 import { ExamPreparationPack, ActiveTabId } from '../types';
 import { ImportantQuestionsView } from './ImportantQuestionsView';
@@ -40,6 +42,7 @@ interface ResultsDashboardProps {
   onDownloadSuccess: (msg: string) => void;
   onDownloadError: (err: string) => void;
   onStartNewPrep: () => void;
+  onBackToSetup: () => void;
 }
 
 export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
@@ -48,6 +51,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   onDownloadSuccess,
   onDownloadError,
   onStartNewPrep,
+  onBackToSetup,
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTabId>('important');
 
@@ -73,6 +77,32 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 
   return (
     <div className="w-full space-y-8 animate-in fade-in duration-300">
+      {/* TOP BACK & UTILITY BAR */}
+      <div className="flex items-center justify-between gap-4 pb-3 border-b border-slate-200/80 dark:border-slate-800/80 no-print">
+        <button
+          type="button"
+          onClick={onBackToSetup}
+          className="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer group"
+          title="Return to setup to adjust marks, difficulty, or sections"
+        >
+          <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:-translate-x-0.5 transition-transform" />
+          <span>Back to Configuration</span>
+        </button>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onStartNewPrep}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all cursor-pointer"
+            title="Upload new notes or start fresh"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Start New Exam</span>
+            <span className="sm:hidden">New Prep</span>
+          </button>
+        </div>
+      </div>
+
       {/* TOP HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2 no-print">
         <div className="space-y-1">
@@ -351,8 +381,48 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
         )}
       </div>
 
+      {/* BOTTOM ACTION ROW */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 no-print">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Want to revise your exam configuration?</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Tweak marks distribution, change difficulty, or pick different revision modules.</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={onBackToSetup}
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            Back to Configuration
+          </button>
+          <button
+            type="button"
+            onClick={onStartNewPrep}
+            className="px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all cursor-pointer flex items-center gap-1.5"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            New Upload
+          </button>
+        </div>
+      </div>
+
       {/* MOBILE BOTTOM NAVIGATION BAR */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center justify-around no-print shadow-lg">
+        <button
+          onClick={onBackToSetup}
+          className="flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600"
+          title="Back to Configuration"
+        >
+          <ArrowLeft className="w-4 h-4 mb-0.5 text-blue-600 dark:text-blue-400" />
+          Back
+        </button>
         <button
           onClick={() => setActiveTab('important')}
           className={`flex flex-col items-center py-1 px-2 rounded-lg text-[10px] font-bold ${

@@ -35,6 +35,7 @@ export interface PreparationSetup {
   examTitle: string;
   sections: ExamSectionConfig[];
   selectedContent: ContentTypeId[];
+  startOptionNumberFromZero?: boolean;
 }
 
 export interface ImportantQuestion {
